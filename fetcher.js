@@ -6,19 +6,20 @@ const localPath = args[1];
 let fileSize;
 
 request(domain, (error, response, body) => {
+  if (error) {
+    console.log("Returned status code 400 URL is invalid.");
+    process.exit();
+  }
   fs.writeFile(localPath, body, (err) => {
     if (err) {
       console.log(err);
       return;
     }
-    // console.log(response.statusCode);
-    // if (response.statusCode === 400) {
-    //   console.log("Returned status code 400 URL is invalid.");
-    //   process.exit();
-    // }
+
     fs.stat(localPath, (error, stats) => {
       if (error) {
-        console.log(error);
+        console.log("Invalid file path. Please enter a valid one.");
+        process.exit();
       }
 
       fileSize = stats.size;
